@@ -6,6 +6,11 @@ import "./Tickets.css"
     
 export const TicketList = () => {
     const [tickets, setTickets] = useState([])
+    const [filteredTickets, setFiltered] = useState([])
+
+    const localHoneyUser = localStorage.getItem("honey_user")
+    const honeyUserObject = JSON.parse(localHoneyUser)
+
 
     useEffect(
         () => {
@@ -18,11 +23,23 @@ export const TicketList = () => {
         },
         []
     )
+
+    useEffect(
+        () => {
+            if (honeyUserObject.staff) {
+                setFiltered(tickets)
+            } else {
+                const myTickets = tickets.filter(ticket => ticket.userId === honeyUserObject.id)
+                setFiltered(myTickets)
+            }
+        },
+        [tickets]
+    )
     return <>
         <h2>List of Tickets</h2>
         <article className="tickets">
             {
-                tickets.map(
+                filteredTickets.map(
                     (ticket) => {
                         return <section className="ticket">
                             <header>{ticket.description}</header>
