@@ -15,6 +15,8 @@ export const TicketList = () => {
     const localHoneyUser = localStorage.getItem("honey_user")
     const honeyUserObject = JSON.parse(localHoneyUser)
 
+
+    //function for, as non-employee, viewing open tix or all tix
     useEffect(
         () => {
             if (openOnly) {
@@ -30,6 +32,7 @@ export const TicketList = () => {
         [openOnly]
     )
 
+    //function for, as employee, viewing only emergency tix
     useEffect(
         () => {
             if (emergency) {
@@ -42,7 +45,8 @@ export const TicketList = () => {
         },
         [emergency]
     )
-
+    
+    //function for setting initial state of ticket list
     useEffect(
         () => {
             fetch(`http://localhost:8088/serviceTickets`)
@@ -54,7 +58,7 @@ export const TicketList = () => {
         },
         []
     )
-
+    //function for filtering tickets based on whether user is employee or customer
     useEffect(
         () => {
             if (honeyUserObject.staff) {
