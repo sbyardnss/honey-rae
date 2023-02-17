@@ -9,10 +9,26 @@ export const TicketList = () => {
     const [tickets, setTickets] = useState([])
     const [filteredTickets, setFiltered] = useState([])
     const [emergency, setEmergency] = useState(false)
+    const [openOnly, viewOnlyOpenTix] = useState(false)
     const navigate = useNavigate()
 
     const localHoneyUser = localStorage.getItem("honey_user")
     const honeyUserObject = JSON.parse(localHoneyUser)
+
+    useEffect(
+        () => {
+            if (openOnly) {
+                const openTickets = tickets.filter(ticket => {
+                    return ticket.userId === honeyUserObject.id && ticket.dateCompleted === ""
+                })
+                setFiltered(openTickets)
+            } else {
+                const myTickets = tickets.filter(ticket => ticket.userId === honeyUserObject.id)
+                setFiltered(myTickets)
+            }
+        },
+        [openOnly]
+    )
 
     useEffect(
         () => {
@@ -57,7 +73,11 @@ export const TicketList = () => {
                     <button onClick={() => setEmergency(true) }>Emergency Only</button>
                     <button onClick={() => setEmergency(false) }>View All</button>
                 </>
-                : <button onClick={() => navigate("/ticket/create")}>Create Ticket</button>
+                : <>
+                    <button onClick={() => navigate("/ticket/create")}>Create Ticket</button>
+                    <button onClick={() => viewOnlyOpenTix(true)}>Open Tickets</button>
+                    <button onClick={() => viewOnlyOpenTix(false)}>All Tickets</button>
+                </>
 
         }
 
