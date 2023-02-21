@@ -9,3 +9,12 @@
     padding: 0.7rem;
     margin: .5rem;
 }
+
+.ticketListBtns {
+    margin: 0 10px;
+
+}
+
+#searchArea {
+    margin: 10px 10px;
+}

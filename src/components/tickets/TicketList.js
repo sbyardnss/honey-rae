@@ -5,7 +5,7 @@ import "./Tickets.css"
 //     return <h2>List of Tickets</h2>
 // }
 
-export const TicketList = () => {
+export const TicketList = ( {searchTermsState} ) => {
     const [tickets, setTickets] = useState([])
     const [filteredTickets, setFiltered] = useState([])
     const [emergency, setEmergency] = useState(false)
@@ -15,8 +15,18 @@ export const TicketList = () => {
     const localHoneyUser = localStorage.getItem("honey_user")
     const honeyUserObject = JSON.parse(localHoneyUser)
 
+    useEffect(
+        () => {
+            const searchedTerms = tickets.filter(
+                (ticket) => {
+                    return ticket.description.toLowerCase().includes(searchTermsState.toLowerCase())
+                }
+            )
+        },
+        [searchTermsState]
+    )
 
-    //function for, as non-employee, viewing open tix or all tix
+    // function for, as non-employee, viewing open tix or all tix
     useEffect(
         () => {
             if (openOnly) {
@@ -74,13 +84,13 @@ export const TicketList = () => {
         {
             honeyUserObject.staff ?
                 <>
-                    <button onClick={() => setEmergency(true) }>Emergency Only</button>
-                    <button onClick={() => setEmergency(false) }>View All</button>
+                    <button className="ticketListBtns" onClick={() => setEmergency(true) }>Emergency Only</button>
+                    <button className="ticketListBtns" onClick={() => setEmergency(false) }>View All</button>
                 </>
                 : <>
-                    <button onClick={() => navigate("/ticket/create")}>Create Ticket</button>
-                    <button onClick={() => viewOnlyOpenTix(true)}>Open Tickets</button>
-                    <button onClick={() => viewOnlyOpenTix(false)}>All Tickets</button>
+                    <button className="ticketListBtns" onClick={() => navigate("/ticket/create")}>Create Ticket</button>
+                    <button className="ticketListBtns" onClick={() => viewOnlyOpenTix(true)}>Open Tickets</button>
+                    <button className="ticketListBtns" onClick={() => viewOnlyOpenTix(false)}>All Tickets</button>
                 </>
 
         }
