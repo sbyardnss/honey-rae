@@ -30,3 +30,18 @@
 .ticket__emergency {
     margin-top: 10px;
 }
+
+.ticket__close {
+    float: right;
+    margin-top: 4px;
+}
+
+.ticket__claim {
+    margin-top: 4px;
+}
+
+.ticket__delete {
+    float: right;
+    margin-top: 4px;
+    background-color: lightcoral;
+}

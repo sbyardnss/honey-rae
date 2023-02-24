@@ -29,7 +29,7 @@ export const Ticket = ({ ticketObject, currentUser, employeesArray, getAllTicket
     const buttonOrNoButton = () => {
         if (currentUser.staff) {
 
-            return <button onClick={() => {
+            return <button className="ticket__claim" onClick={() => {
                 fetch(`http://localhost:8088/employeeTickets`, {
                     method: "POST",
                     headers: {
@@ -57,16 +57,39 @@ export const Ticket = ({ ticketObject, currentUser, employeesArray, getAllTicket
     }
 
     const canClose = () => {
-        if (currentUser.staff) {
-            return  <button></button>
-        } 
+        if (employeeUser?.id === assignedEmployee?.id && ticketObject.dateCompleted === "") {
+            return <button onClick={closeTicket} className="ticket__close">Close Ticket</button>
+        }
+        else {
+            return ""
+        }
+    }
+
+    const deleteButton = () => {
+        if (!currentUser.staff) {
+            return <button onClick={() => {}} className="ticket__delete">Delete Ticket</button>
+        }
         else {
             return ""
         }
     }
 
     const closeTicket = () => {
-
+        const copy = {
+            userId: ticketObject.userId,
+            description: ticketObject.description,
+            emergency: ticketObject.emergency,
+            dateCompleted: new Date()
+        }
+        return fetch(`http://localhost:8088/serviceTickets/${ticketObject.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(copy)
+        })
+            .then(response => response.json())
+            .then(getAllTickets)
     }
 
 
@@ -87,6 +110,12 @@ export const Ticket = ({ ticketObject, currentUser, employeesArray, getAllTicket
                 ticketObject.employeeTickets.length
                     ? `Assigned to ${assignedEmployee?.user?.fullName}`
                     : buttonOrNoButton()
+            }
+            {
+                canClose()
+            }
+            {
+                deleteButton()
             }
         </footer>
     </section>
