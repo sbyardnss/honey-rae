@@ -18,3 +18,7 @@
 #searchArea {
     margin: 10px 10px;
 }
+
+#descriptionText {
+    height: 200px;
+}

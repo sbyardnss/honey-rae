@@ -63,7 +63,7 @@ export const EmployeeForm = () => {
         
 
         <form className="profile">
-            <h2 className="profile__title">New Service Ticket</h2>
+            <h2 className="profile__title">Profile</h2>
             <div className={`${feedback.includes("Error") ? "error" : "feedback"} ${feedback === "" ? "invisible" : "visible"}`}>
                 {feedback}
             </div>

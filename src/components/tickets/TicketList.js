@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
-import { Navigate, useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import "./Tickets.css"
 // export const TicketList = () => {
 //     return <h2>List of Tickets</h2>
 // }
 
-export const TicketList = ( {searchTermsState} ) => {
+export const TicketList = ({ searchTermsState }) => {
     const [tickets, setTickets] = useState([])
     const [filteredTickets, setFiltered] = useState([])
     const [emergency, setEmergency] = useState(false)
@@ -21,7 +21,7 @@ export const TicketList = ( {searchTermsState} ) => {
                 (ticket) => {
                     return ticket.description.toLowerCase().includes(searchTermsState.toLowerCase())
                 })
-                setFiltered(searchedTerms)
+            setFiltered(searchedTerms)
         },
         [searchTermsState]
     )
@@ -55,7 +55,7 @@ export const TicketList = ( {searchTermsState} ) => {
         },
         [emergency]
     )
-    
+
     //function for setting initial state of ticket list
     useEffect(
         () => {
@@ -84,8 +84,8 @@ export const TicketList = ( {searchTermsState} ) => {
         {
             honeyUserObject.staff ?
                 <>
-                    <button className="ticketListBtns" onClick={() => setEmergency(true) }>Emergency Only</button>
-                    <button className="ticketListBtns" onClick={() => setEmergency(false) }>View All</button>
+                    <button className="ticketListBtns" onClick={() => setEmergency(true)}>Emergency Only</button>
+                    <button className="ticketListBtns" onClick={() => setEmergency(false)}>View All</button>
                 </>
                 : <>
                     <button className="ticketListBtns" onClick={() => navigate("/ticket/create")}>Create Ticket</button>
@@ -102,8 +102,11 @@ export const TicketList = ( {searchTermsState} ) => {
                 filteredTickets.map(
                     (ticket) => {
                         return <section className="ticket">
-                            <header>{ticket.description}</header>
-                            <footer>Emergency: {ticket.emergency ? "bomb" : "No"}</footer>
+                            <header>
+                                <Link to={`/tickets/${ticket.id}/edit`}>Ticket {ticket.id}</Link>
+                            </header>
+                            <section>{ticket.description}</section>
+                            <footer>Emergency: {ticket.emergency ? "🧨" : "No"}</footer>
                         </section>
                     }
                 )
