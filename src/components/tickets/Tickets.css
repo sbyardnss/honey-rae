@@ -22,3 +22,11 @@
 #descriptionText {
     height: 200px;
 }
+
+.ticket__footer {
+    border-top: 2px solid rgb(209, 167, 181);
+    margin-top: 20px;
+}
+.ticket__emergency {
+    margin-top: 10px;
+}

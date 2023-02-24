@@ -7,7 +7,7 @@ export const TicketEdit = () => {
         id: 0,
         userId: 0,
         description: "",
-        emergency: null,
+        emergency: false,
         dateCompleted: ""
     })
     const {ticketId} = useParams()
@@ -31,17 +31,6 @@ export const TicketEdit = () => {
             [ticketId]
             )
             
-            
-    // const [ticketToUpdate, updateTicket] = useState({
-    //     description: "",
-    //     emergency: null
-    // })
-    // useEffect(
-    //     () => {
-
-    //     }
-    // )
-
 
     const handleSaveButtonClick = (event) => {
         event.preventDefault()
