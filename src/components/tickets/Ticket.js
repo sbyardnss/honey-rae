@@ -2,9 +2,10 @@ import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import "./Tickets.css"
 
-export const Ticket = ({ ticketObject, currentUser, employeesArray, getAllTickets }) => {
+export const Ticket = ({ employeesArray, currentUser, getAllTickets, ticketObject }) => {
     const navigate = useNavigate()
     const localHoneyUser = localStorage.getItem("honey_user")
+    const [employeeUser, setEmployeeUser] = useState({})
     const honeyUserObject = JSON.parse(localHoneyUser)
     // const [claimedEmployee, updateClaimedEmployee] = useState({
     //     employeeId: 0,
@@ -23,8 +24,21 @@ export const Ticket = ({ ticketObject, currentUser, employeesArray, getAllTicket
     // }
 
 
-    const employeeUser = employeesArray.find(employee => employee.userId === honeyUserObject.id)
+    // const employeeUser = employeesArray.find(employee => employee.userId === currentUser.id)
+    useEffect(
+        () => {
+            if (currentUser.staff) {
+                const matchedEmployee = employeesArray.find(employee => employee.userId === currentUser.id)
+                setEmployeeUser(matchedEmployee)
+            }
+            else {
+                setEmployeeUser({})
+            }
+        },
+        []
+    )
 
+    
 
     const buttonOrNoButton = () => {
         if (currentUser.staff) {
@@ -57,7 +71,7 @@ export const Ticket = ({ ticketObject, currentUser, employeesArray, getAllTicket
     }
 
     const canClose = () => {
-        if (employeeUser?.id === assignedEmployee?.id && ticketObject.dateCompleted === "") {
+        if (employeeUser.id === assignedEmployee?.id && ticketObject.dateCompleted === "" && currentUser.staff) {
             return <button onClick={closeTicket} className="ticket__close">Close Ticket</button>
         }
         else {
@@ -67,7 +81,14 @@ export const Ticket = ({ ticketObject, currentUser, employeesArray, getAllTicket
 
     const deleteButton = () => {
         if (!currentUser.staff) {
-            return <button onClick={() => {}} className="ticket__delete">Delete Ticket</button>
+            return <button onClick={() => {
+                fetch(`http://localhost:8088/serviceTickets/${ticketObject.id}`, {
+                    method: "DELETE",
+                })
+                    .then(() => {
+                        getAllTickets()
+                    })
+            }} className="ticket__delete">Delete Ticket</button>
         }
         else {
             return ""
