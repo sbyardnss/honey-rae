@@ -71,7 +71,7 @@ export const Ticket = ({ employeesArray, currentUser, getAllTickets, ticketObjec
     }
 
     const canClose = () => {
-        if (employeeUser.id === assignedEmployee?.id && ticketObject.dateCompleted === "" && currentUser.staff) {
+        if (employeeUser?.id === assignedEmployee?.id && ticketObject.dateCompleted === "" && currentUser.staff) {
             return <button onClick={closeTicket} className="ticket__close">Close Ticket</button>
         }
         else {
